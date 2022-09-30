@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <!-- Meta Tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="dosev, spastic, spastik, charity, donate, ortopedik,orthopedic, engelli">
+  <meta name="description" content="Dosev, Dünya Spastik ve Ortapedik Özürlüler">
+
+  <!-- Page Details -->
+  <title>Online Bağış | Dosev</title>
+  <link  rel="shortcut icon" type="image/ico" href="img/logos/favicon.png">
+  <meta name="author" content="www.cactussoftware.digital">
+
+  <!-- Stylesheet -->
+  <link  rel="stylesheet" href="css/donate/bootstrap.min.css">
+  <link  rel="stylesheet" href="css/font-awesome.css">
+  <link  rel="stylesheet" href="css/donate/sticky-footer-navbar.css">
+  <link  rel="stylesheet" href="css/donate/jquery.cxdialog.css">
+
+  <!-- Scripts -->
+  <script type="text/javascript"></script>
+  <script src="js/donate/jquery.cxdialog.js"></script>
+  <script src="js/donate/jquery.mask.js"></script>
+  <script src="js/donate/function.js"></script>
+  <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js?q=07:39:53"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        //bağış toplamı hesplama
+        $.toplamBagisHesapla = function(){
+                $(".modal-body #sonToplam").empty()
+                var SepetTutar= $("input[name=SepetTutar]").val();
+                var adet=$("select[name=adet]").val();
+                var sonToplam= SepetTutar*adet;
+                if(SepetTutar<1){
+                  $.cxDialog({
+                    title: 'UYARI !',
+                    okText: 'Tamam',
+                    info: '<p>Tutar 1 TL den küçük olamaz ...</p>',
+                    ok: function(){},
+                    //baseClass: 'black'
+                  });
+                        
+                    //$.cxDialog('<br><p>Tutar 5 TL den küçük olamaz</p><br>');
+                    $(".modal-body #SepetTutar").val("");
+                    $(".modal-body #sonToplam").empty();
+                    $("#adet option").each(function(){
+                        $(this).removeAttr("selected");					
+                        })
+                }else if(adet>1){
+                $(".modal-body #sonToplam").empty()
+                $(".modal-body #sonToplam").html("<b>"+sonToplam+" ₺ </b>")
+                }
+                var x;
+                var veri;
+                var y=1;
+                veri="";
+                for(x=0; x<adet;x++){
+                veri=veri+'<div class="form-group row"><label class="col-sm-3 col-form-label">Hissedar Adı </label><div class="col-sm-5"><input maxlength="40" type="text" class="form-control hissedar" id="hissedar" name="hissedar['+x+'][name]"   placeholder="Hissedar Adı"  required="required"></div><div class="col-sm-4"><input maxlength="15" type="number" class="form-control hissedarCep" id="hissedar" name="hissedar['+x+'][value]"   placeholder="Cep Tel"  required="required"></div></div>';
+                }
+                $('#hissedarekle').empty();
+                $("#hissedarekle").append(veri);
+                }
+        $.bagisSil= function(silid){
+             var silid;
+            $.cxDialog({
+            title: 'UYARI !',
+            info: '<strong>Silmek istediğinizden emin misiniz?！</strong>',
+            okText: 'Sil',
+            no: null,
+            noText: 'Vazgeç',
+            ok: function(){
+                       $.ajax({       
+                        type: "POST",
+                        url:  "function.php",
+                        data : {silid:silid},
+                        success: function(sonuc){
+                            if(sonuc==1){
+                                location.reload();
+                            }else{
+                            $.cxDialog('<p>Hata oluştu ! Silinemedi</p>');
+                                }
+                        }
+                    });
+            },
+            no: function(){
+            }
+          });
+            }
+        </script>
+
+  <nav class="navbar navbar-default navbar-static-top" >
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a target="_blank" class="navbar-brand" href="http://dosev.org/">
+          <img alt="logo" src="img/logos/top_logo.png">
+        </a>
+      </div>
+
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav"></ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="https://www.facebook.com/dosev/" target="_blank"><i class="fa fa-facebook-f"></i></a></li>
+          <li><a href="https://twitter.com/dosev" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://www.instagram.com/dosev/" target="_blank"><i class="fa fa-instagram"> </i></a></li>
+          <li><a href="http://www.youtube.com/dosev" target="_blank"><i class="fa fa-youtube"></i></a></li>    
+          <li><a  href="tel:+90 111 000 11 11"><i class="fa fa-phone"></i> +90 111 00 11 11</a></li>
+          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+          <li class=""><a href="/donate.html">TR</a></li>
+          <li class=""><a href="/en.html">EN</a></li>
+          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+          <li>
+            <form name="kurList" method="post">
+              <select class="form-control" name="kur" style="height: 41px; background-color: #f3f3f3;" onchange="kurList.action=this.value; kurList.submit();">
+                <option value="kur.php?kur=TL">₺ Türk Lirası</option>
+                <option value="kur.php?kur=Dolar">$ Dolar</option>
+                <option value="kur.php?kur=Euro">€ Euro</option>
+                <option value="kur.php?kur=Sterlin">£ Sterlin</option>
+              </select>
+            </form>
+          </li>
+        </ul>      
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 col-md-8 col-sm-7 right-box">
+        <ul class="nav nav-tabs">
+
+          <li class="septet active">
+            <a href="#Dosev2022">
+              <img src="/img/icons/donate/dosevbagis.png" alt="">
+              <br class="hidden-md hidden-sm hidden-xs">Dosev
+            </a>
+          </li>
+          
+          <li class="septet">
+            <a href="#Dosev2021">
+              <img src="/img/icons/donate/dosevdonate.png" alt="">
+              <br class="hidden-md hidden-sm hidden-xs">Dosev Yardım
+            </a>
+          </li> 
+         
+          <li class="septet">
+            <a href="#acilyardim">
+              <img src="/img/icons/donate/dosevdonate.png" alt="">
+              <br class="hidden-md hidden-sm hidden-xs">Dosev Yardım
+            </a>
+          </li> 
+         
+          <li class="septet">
+            <a href="#Dosev2018">
+              <img src="/img/icons/donate/dosevdonate.png" alt="">
+              <br class="hidden-md hidden-sm hidden-xs">Dosev Yardım
+            </a>
+          </li> 
+         
+          <li class="septet">
+            <a href="#Dosev2017">
+              <img src="/img/icons/donate/dosevdonate.png" alt="">
+              <br class="hidden-md hidden-sm hidden-xs">Dosev Yardım
+            </a>
+          </li> 
+         
+          <li class="septet">
+            <a href="#Dosev2016">
+              <img src="/img/icons/donate/dosevdonate.png" alt="">
+              <br class="hidden-md hidden-sm hidden-xs">Dosev Yardım
+            </a>
+          </li> 
+         
+          <li class="septet">
+            <a href="#Dosev2015">
+              <img src="/img/icons/donate/dosevdonate.png" alt="">
+              <br class="hidden-md hidden-sm hidden-xs">Dosev Yardım
+            </a>
+          </li> 
+        </ul>
+
+      <div class="tab-content">
+        <div id="Dosev2022" class="tab-pane fade in active">
+          <div class="row">
+
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail">
+                <a href="#">
+                  <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+                </a>
+                <div class="caption">
+                  <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                    <p>
+                      Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                    </p>
+                    
+                  <form action="" method="post">
+                    <div class="input-group">
+                      <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                      <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                    </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail">
+                <a href="#">
+                  <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+                </a>
+                <div class="caption">
+                  <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                    <p>
+                      Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                    </p>
+                    
+                  <form action="" method="post">
+                    <div class="input-group">
+                      <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                      <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                    </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail">
+                <a href="#">
+                  <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+                </a>
+                <div class="caption">
+                  <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                    <p>
+                      Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                    </p>
+                    
+                  <form action="" method="post">
+                    <div class="input-group">
+                      <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                      <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                    </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+        <div class="clearfix"></div>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 4. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+            
+      </div>
+    </div>
+    
+    <div id="Dosev2021" class="tab-pane fade ">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 2. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      <div class="clearfix"></div>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 5. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <div id="Dosev2021" class="tab-pane fade ">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 2. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      <div class="clearfix"></div>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 5. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <div id="Dosev2021" class="tab-pane fade ">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 2. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      <div class="clearfix"></div>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 5. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <div id="Dosev2021" class="tab-pane fade ">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 2. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      <div class="clearfix"></div>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 5. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <div id="Dosev2021" class="tab-pane fade ">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 2. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      <div class="clearfix"></div>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 5. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <div id="Dosev2021" class="tab-pane fade ">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 2. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 1. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      <div class="clearfix"></div>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="img/logos/DOSEV_Logo.png" alt="Dosev 1. Bölge-1250 TL">
+            </a>
+            <div class="caption">
+              <h5><strong>Dosev 5. Bölge-2500 TL</strong></h5>
+                <p>
+                  Dosev Ortopedik Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum, nemo quis sunt repellendus.
+                </p>
+                
+              <form action="" method="post">
+                <div class="input-group">
+                  <input type="text" value="2500" readonly="" name="" id="" class="form-control" placeholder="0">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Help">₺</button>
+                  <button type="button" class="btn btn-success orderDonation" data-fonid="254" data-title="Dosev 1. Bölge-2500 TL" data-portal="38" data-toggle="modal" data-target="#sepet_detail">Bağışla</button>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+</div>
+        
+  <div class="col-lg-3 col-md-4 col-sm-5 left-box">
+    <div class="panel panel-primary">
+      <div class="panel-heading">BAĞIŞ SEPETİNİZ</div>
+        <div class="panel-body">
+          <div class="media">
+            <div class="item-right"></div>
+              <div class="media-body">
+                <p style="color: #9f9595;">Bağış sepetiniz boş</p>
+              </div>
+            </div>
+          </div>
+        </div>
+         <img style="max-width:100%; padding-bottom:10px" src="img/donate/payment.png" alt="bağış güvenlik">
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="sepetDetay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form method="post" action="" id="" onsubmit="return false" name="">
+          <input type="hidden" class="form-control" id="" name="" value="0">
+          <input type="hidden" class="form-control" id="" name="" value="0">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="fonid" id="fonid" value="">
+        
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Tutar</label>
+          <div class="col-sm-3">
+          <div class="input-group">
+            <input type="text" onblur="$.toplamBagisHesapla();" value="0" name="SepetTutar" id="SepetTutar" class="form-control" placeholder="0">
+          <div class="input-group-btn"> <button type="button" class="btn btn-default" aria-label="Help">₺</button></div>
+          </div></div>
+             
+             <div class="col-sm-2 toplamTutar" style="font-size:16px" id="sonToplam">
+          </div>
+        </div>
+        <div class="form-group row" id="bagisNotuDurum" style="display:none">
+          <label class="col-sm-3">Bağış Notu</label>
+          <div class="col-sm-9">
+            <div class="form-check">
+               <textarea name="bagisNotu" id="bagisNotu" style="width:100%" maxlength="150"></textarea>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group row" id="adetDurum" style="display:none">
+          <label for="inputEmail3" class="col-sm-3 col-form-label">Adet</label>
+          <div class="col-sm-4">
+            <select class="form-control" name="adet" id="adet" onchange="$.toplamBagisHesapla();" style="width:80px">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+            </select>
+          </div>
+        </div>
+              
+        <div class="form-group row" id="bagisDetay1" style="display:none">
+          <label for="inputEmail3" class="col-sm-3 col-form-label">Faaliyet</label>
+          <div class="col-sm-4">
+            <select class="form-control" name="activities" id="activities"></select>
+          </div>
+        </div>
+
+        <div class="form-group row" id="bagisDetay2" style="display:none">
+          <label for="inputEmail3" class="col-sm-3 col-form-label">Bağış Türü</label>
+          <div class="col-sm-4">
+            <select class="form-control" name="sources" id="sources"></select>
+          </div>
+        </div>
+              
+        <div class="form-group row" id="bagisDetay3" style="display:none">
+          <label for="inputEmail3" class="col-sm-3 col-form-label">Bağış Bölgesi</label>
+          <div class="col-sm-4">
+            <select class="form-control" name="pools" id="pools"></select>
+          </div>
+        </div>
+              
+        <div id="hissedarekle" style="display:none">
+            <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Hissedar Adı </label>
+          <div class="col-sm-5">
+            <input maxlength="40" type="text" class="form-control hissedar" id="hissedar" name="hissedar[0][name]" placeholder="Hissedar Adı" required="required">
+          </div>
+          <div class="col-sm-4">
+            <input maxlength="15" type="number" class="form-control hissedarCep" id="hissedarcep" name="hissedar[0][value]" placeholder="Cep Tel" required="required">
+          </div>
+          </div>
+            </div>
+        <div class="form-group row" id="vekaletYazisi" style="display:none">
+          <label class="col-sm-3"></label>
+          <div class="col-sm-9">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" checked="" name="vekalat" id="vekalet" value="1" type="radio">
+                 Yukarda adı geçen kişi adına kurban almaya, kesmeye, kestirmeye ve etini dağıtmaya vekaletimi veriyorum           </label>
+            </div>
+          </div>
+        </div>
+     </div>
+     <div class="modal-footer">
+            <button type="submit" onclick="$.sepetEkle(1);" class="btn btn-default">Bağışla</button>       
+            <button type="submit" onclick="$.sepetEkle(0);" class="btn btn-success">Sepete Ekle</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div> <link href="css/font-awesome.css" rel="stylesheet">
+    <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" id="myModalLabel">Online Bağış Destek</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+            <strong>Bağış sistemimizde yaşadığınız problemleri aşağıdaki kanallardan bize iletebilirsiniz</strong><br>
+            <strong>Telefon: </strong><a href="tel:+90 111 000 11 11"><i class="fa fa-phone"></i> +90 111 00 11 11</a><br>
+            <strong>Mail: </strong> info@dosev.org
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <div class="well">
+            <img src="img/logos/top_logo.png" style="max-width: 100%; max-height:98px;">
+          </div>
+        </div>
+      <div class="col-md-5 text-center">
+        <div class="well">
+          <p>
+            Online Bağış sayfamızdan yapmış olduğunuz bağışlardan banka <strong>komisyonu</strong> ve <strong>masraf kesintisi</strong> yapılmamaktadır.Yaptığınız bağışın tamamı derneğimize ulaşmaktadır.</p><p>Kredi kartı bilgileriniz<strong> 256 Bit SSL</strong> ile direk bankaya ulaştırılır. Kart bilgileriniz derneğimiz tarafından <strong>saklanmamaktadır.</strong>
+          </p>
+        </div>
+      </div>
+    
+      <div class="col-md-3">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" style="padding: 6px 15px !important;">
+            <a href="tel:+90 111 000 11 11" style="color: #333;"><i class="fa fa-phone"></i>+90 111 00 11 11</a> 
+          </li>
+          <li class="list-group-item" style="padding: 6px 15px !important;">
+            <i class="fa fa-envelope"></i>
+            <a href="mailto:info@dosev.org" style="color: #333;">info@dosev.org</a> 
+          </li>
+          <li class="list-group-item" style="padding: 6px 15px !important;">
+            <i class="fa fa-map-marker"></i>
+              Mehmet Akif Ersoy, Sk. No:3/10,
+              Yenimahalle / Ankara / TURKIYE 
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <hr style="border-top: 1px solid #e7e7e7; margin-top: 0; margin-bottom: 4px;">
+        <div class="col-md-3">
+          <p style="color: #777777; font-size: 14px; margin-bottom: 0px; line-height:34px;">
+            Copyright © Dosev
+          </p>
+        </div>
+        
+        <div class="col-md-3">
+          <p class="pull-right">
+            <a style="color: #a5a5a5; font-size: 14px; margin-bottom: 0px; line-height:28px;" target="_blank" href="http://dosev.org">Dosev</a>
+          </p>
+        </div>
+         
+        <div class="col-md-6">
+          <p class="pull-right" style="margin-bottom:4px;">
+            <a target="_blank" href="https://twitter.com/dosev" class="btn btn-default">
+              <i class="fa fa-twitter left" style="color:#00abef;"></i> Twitter
+            </a>
+            <a target="_blank" href="https://www.facebook.com/dosev/" class="btn btn-default">
+              <i class="fa fa-facebook left" style="color:#507cbe;"></i> Facebook
+            </a>
+            <a target="_blank" href="https://www.youtube.com/user/dosev" class="btn btn-default">
+              <i class="fa fa-youtube left" style="color:#d12121;"></i> Youtube
+            </a>
+            <a target="_blank" href="https://www.instagram.com/dosev/" class="btn btn-default">
+              <i class="fa fa-instagram left" style="color:#e4405f"></i> İnstagram
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+<script src="js/donate/bootstrap.min.js"></script>
+
+<div id="cxdialog" class="cxdialog"></div>
+<div id="cxdialog_overlay" class="cxdialog_overlay"></div>
+
+</body>
+</html>
